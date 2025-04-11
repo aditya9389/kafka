@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Adii@9389
+      MYSQL_DATABASE: kafkademo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: Adii@9389
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MAVEN_OPTS: "-Dmaven.repo.local=/root/.m2"
+    container_name: kafkademo-app
+    depends_on:
+      - kafka
+      - mysql
+    ports:
+      - "8080:8080"
+    command: >
+      sh -c "mvn clean package &&
+             java -jar target/*.jar"
