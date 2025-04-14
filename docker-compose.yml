@@ -45,6 +45,6 @@ services:
       - mysql
     ports:
       - "8080:8080"
-    command: >
-      sh -c "mvn clean package &&
-             java -jar target/*.jar"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+

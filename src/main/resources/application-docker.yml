@@ -1,0 +1,21 @@
+spring:
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      enable-auto-commit: true
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/kafkademo
+    username: root
+    password: Adii@9389
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        format_sql: true
+    show-sql: true
