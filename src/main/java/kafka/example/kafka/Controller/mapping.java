@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class mapping {
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
     private final String TOPIC = "Golden_Record";
 
